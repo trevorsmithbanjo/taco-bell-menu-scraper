@@ -1,9 +1,13 @@
 import axios from 'axios';
-import cheerio, { root } from 'cheerio';
+import cheerio from 'cheerio';
+
+interface MenuData {
+  title?: string;
+  price?: number;
+}
 
 interface MenuItems {
-  title: string;
-  price: number;
+  [key: string]: MenuData[];
 }
 
 const rootUrl = 'https://www.tacobell.com/food/';
@@ -21,8 +25,8 @@ const urlEndpoints: string[] = [
 
 const AxiosInstance = axios.create();
 
-const getMenuData = async (url: string): Promise<MenuItems[]> => {
-  const menuData: MenuItems[] = [];
+const getMenuData = async (url: string): Promise<MenuData[]> => {
+  const menuData: MenuData[] = [];
 
   try {
     const responseData = await AxiosInstance.get(url);
@@ -51,43 +55,20 @@ const getMenuData = async (url: string): Promise<MenuItems[]> => {
   return menuData;
 };
 
-// const buildMenuItems = async () => {
-//   const menuItems: MenuItems[] = [];
+const buildMenuItems = async () => {
+  const menuItems: MenuItems[] = [];
 
-//   urlEndpoints.forEach((endpoint) => {
-//     menuItems.push(await getMenuData(`${rootUrl}${endpoint}`));
-//   });
-// };
+  urlEndpoints.forEach(async (endpoint, i) => {
+    const menuItem: MenuData[] = await getMenuData(`${rootUrl}${endpoint}`);
+
+    // console.log(endpoint);
+    // console.log(menuItem);
+
+    console.log(menuItems);
+    return menuItems.push({ [endpoint]: menuItem });
+  });
+};
 
 (async () => {
-  console.log(await getMenuData(`${rootUrl}tacos`));
+  console.log(await buildMenuItems());
 })();
-
-// urlEndpoints.forEach((endpoint) => {
-//   const menuItems: MenuItems[] = [];
-
-//   AxiosInstance.get(`${rootUrl}${endpoint}`)
-//     .then((response) => {
-//       const html = response.data;
-//       const $ = cheerio.load(html);
-//       const items = $('.styles_product-card__1-cAT');
-
-// items.each((i, element) => {
-//   const title: string = $(element)
-//     .find('.styles_product-title__6KCyw > h4')
-//     .text();
-//   const price: number = parseFloat(
-//     $(element)
-//       .find('.styles_product-details__2VdYf > span:first-child')
-//       .text()
-//       .replace('$', '')
-//   );
-
-//   return menuItems.push({ title, price });
-// });
-
-//       console.log(menuItems);
-//       return menuItems;
-//     })
-//     .catch((error) => console.error(error));
-// });
