@@ -55,18 +55,17 @@ const getMenuData = async (url: string): Promise<MenuData[]> => {
   return menuData;
 };
 
-const buildMenuItems = async () => {
+const buildMenuItems = async (): Promise<MenuItems[]> => {
   const menuItems: MenuItems[] = [];
 
-  urlEndpoints.forEach(async (endpoint, i) => {
-    const menuItem: MenuData[] = await getMenuData(`${rootUrl}${endpoint}`);
+  for (let i = 0; i < urlEndpoints.length; i++) {
+    const menuItem: MenuData[] = await getMenuData(
+      `${rootUrl}${urlEndpoints[i]}`
+    );
+    menuItems.push({ [urlEndpoints[i]]: menuItem });
+  }
 
-    // console.log(endpoint);
-    // console.log(menuItem);
-
-    console.log(menuItems);
-    return menuItems.push({ [endpoint]: menuItem });
-  });
+  return menuItems;
 };
 
 (async () => {
