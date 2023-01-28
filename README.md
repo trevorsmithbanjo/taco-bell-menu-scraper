@@ -5,7 +5,7 @@ This is a simple program to scrape menu inforamtion from the taco bell website.
 ## Usage
 
 1. Download the repo locally using `git clone https://github.com/trevorsmithbanjo/taco-bell-menu-scraper.git`
-2. CD into the directory with the project and install all the dependencies with `npm install'
+2. CD into the directory with the project and install all the dependencies with `npm install`
 3. Run `npm run start` and you should see the output from the scraper loged in the command line
 
 ### Functions
