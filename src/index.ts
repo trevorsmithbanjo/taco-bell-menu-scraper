@@ -50,19 +50,21 @@ const getMenuData = async (url: string): Promise<MenuData[]> => {
     });
   } catch (error) {
     console.error(error);
+    throw error;
   }
 
   return menuData;
 };
 
-const buildMenuItems = async (): Promise<MenuItems[]> => {
-  const menuItems: MenuItems[] = [];
+const buildMenuItems = async (): Promise<MenuItems> => {
+  const menuItems: MenuItems = {};
 
   for (let i = 0; i < urlEndpoints.length; i++) {
     const menuItem: MenuData[] = await getMenuData(
       `${rootUrl}${urlEndpoints[i]}`
     );
-    menuItems.push({ [urlEndpoints[i]]: menuItem });
+
+    menuItems[urlEndpoints[i]] = menuItem;
   }
 
   return menuItems;
