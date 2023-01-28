@@ -70,6 +70,13 @@ const buildMenuItems = async (): Promise<MenuItems> => {
   return menuItems;
 };
 
-(async () => {
-  console.log(await buildMenuItems());
-})();
+// TODO: check if ts-node and axios will work with top level await. It currently does not.
+const main = async (): Promise<void> => {
+  const fullMenu = await buildMenuItems();
+
+  console.log(fullMenu);
+};
+
+main();
+
+export { buildMenuItems };
